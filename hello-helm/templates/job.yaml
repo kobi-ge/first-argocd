@@ -1,0 +1,34 @@
+{{- range $key, $con := .Values.jobs }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $key }}
+  labels:
+    {{- if $con.labels }}
+  labels:
+    {{ toYaml $con.labels | nindent 4 }}
+    {{- end }}
+  namespace: {{ $.Values.global.namespace }}
+spec:
+  template:
+    spec:
+      containers:
+      - name: container-1
+        image: {{ $.Values.global.image }}
+        command: ["/bin/sh", "-c"]
+        args: ["cat /mnt/hello.txt"]
+        volumeMounts:
+        - name: container-1-volume
+          mountPath: /mnt
+      restartPolicy: Never
+      volumes:
+      - name: container-1-volume
+      {{- if $con.secret }}
+        secret:
+          secretName: {{ $key }}-secret
+      {{- else }}
+        configMap:
+          name: {{ $key }}-configmap
+      {{- end }}
+{{- end }}

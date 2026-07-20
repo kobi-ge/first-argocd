@@ -1,0 +1,39 @@
+# replicaCount: 1
+
+# name: "{{ .Release.Name -job}}"
+
+# message: "hi from container one"
+
+# # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# image:
+#   repository: busybox
+#   # This sets the pull policy for images.
+#   pullPolicy: IfNotPresent
+#   # Overrides the image tag whose default is the chart appVersion.
+#   tag: "latest"
+
+# jobs:
+#   - name: job-one
+#     namespace: default
+#     image: busybox:latest
+#     message: "hi from container one"
+#   - name: job-two
+#     namespace: default
+#     image: busybox:latest
+#     message: "hi from container two"
+    
+global: 
+  namespace: default
+  image: busybox:latest
+
+jobs:
+  job-one:
+    message: "hi from container one"
+    secret: true
+    labels:
+      app: job-one
+  job-two:
+    message: "hi from container two"
+    secret: false
+    # labels:
+    #   app: job-two

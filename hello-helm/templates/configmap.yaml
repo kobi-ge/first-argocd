@@ -1,0 +1,10 @@
+{{- range $key, $con := .Values.jobs }}
+---
+apiVersion: v1
+kind: {{ if $con.secret }}Secret{{ else }}ConfigMap{{ end }}
+metadata:
+  name: {{ $key }}-{{ ternary "secret" "configmap" $con.secret }}
+  namespace: {{ $.Values.global.namespace }}
+data:
+  hello.txt: {{ $con.message | b64enc | quote }}
+{{- end }}
