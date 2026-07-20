@@ -37,3 +37,6 @@ jobs:
     secret: false
     # labels:
     #   app: job-two
+  job-three:
+    message: "hi from container three"
+    secret: false
