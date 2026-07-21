@@ -14,12 +14,12 @@ spec:
   template:
     spec:
       containers:
-      - name: container {{ $key }}
+      - name: container-{{ $key }}
         image: {{ $.Values.global.image }}
         command: ["/bin/sh", "-c"]
         args: ["cat /mnt/hello.txt"]
         volumeMounts:
-        - name: container-1-volume
+        - name: container-{{ $key }}-volume
           mountPath: /mnt
       restartPolicy: Never
       volumes:
