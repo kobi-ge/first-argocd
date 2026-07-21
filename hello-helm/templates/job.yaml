@@ -4,11 +4,10 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ $key }}
-  labels:
-    {{- if $con.labels }}
+  {{- if $con.labels }}
   labels:
     {{ toYaml $con.labels | nindent 4 }}
-    {{- end }}
+  {{- end }}
   namespace: {{ $.Values.global.namespace }}
 spec:
   template:
@@ -23,7 +22,7 @@ spec:
           mountPath: /mnt
       restartPolicy: Never
       volumes:
-      - name: container-1-volume
+      - name: container-{{ $key }}-volume
       {{- if $con.secret }}
         secret:
           secretName: {{ $key }}-secret
